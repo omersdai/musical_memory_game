@@ -11,11 +11,34 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="./styles/style.css" />
-    <title>Insert Project Name Here</title>
+    <title>Musical Memory Game</title>
   </head>
   <body>
-    <h1>Project Template</h1>
+    <div class="game-info">
+      <div class="top">
+        <div class="left">
+          <h1>Musical Memory Game</h1>
+        </div>
+        <div class="right">
+          <h3 class="row">Score:<span id="score">31</span></h3>
+          <h3 class="row">Level:<span id="level">3</span></h3>
+        </div>
+      </div>
+      <div class="bottom">
+        <button class="btn" id="startBtn" style="margin-right: 100px">
+          Start
+        </button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+      <!-- <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div> -->
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

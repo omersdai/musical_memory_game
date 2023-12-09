@@ -2,7 +2,10 @@
 @import "./utilities";
 
 $primaryColor: steelblue;
-$border: 20px solid black;
+$border: 3px solid black;
+$circleSize: 50px;
+$brightenPercentage: 0.4;
+$padding: 30px;
 
 * {
   margin: 0;
@@ -15,9 +18,71 @@ body {
   font-family: "Roboto", serif;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100vw;
   background-color: steelblue;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  .top,
+  .bottom {
+    width: 100%;
+  }
+  .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: $padding;
+    text-align: center;
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: center;
+    .btn {
+      @extend %btn;
+    }
+  }
+
+  .left,
+  .right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .row {
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.game-area {
+  padding: $padding;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  .circle {
+    height: $circleSize;
+    width: $circleSize;
+    border: $border;
+    border-radius: 50%;
+  }
+
+  .brighten {
+    filter: brightness($brightenPercentage);
+  }
 }
