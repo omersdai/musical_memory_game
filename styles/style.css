@@ -172,6 +172,9 @@ body {
   display: flex;
   justify-content: center;
 }
+.game-info .bottom .btn {
+  border: 3px solid black;
+}
 .game-info .left,
 .game-info .right {
   width: 50%;

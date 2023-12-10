@@ -5,7 +5,7 @@ const startBtn = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 
 const CLICK = "click",
-  COLOR_IDX = "color-idx";
+  SOUND_IDX = "sound-idx";
 
 // RGB Values
 const PINK = [228, 101, 122],
@@ -37,32 +37,64 @@ const brightSoundColors = [
   getBrightRgbString(DARK_BLUE),
 ];
 
+const soundElArr = [];
 const sounds = [];
 
-const brightenDuration = 800; // ms
+const soundDuration = 500; // ms
 const soundCount = 4;
 
 let isActive;
-let level;
+let isPlayerTurn;
 let score;
+let level;
+let playerIdx;
+let soundSequence;
 
 initializeGame();
 
+function playLevel() {
+  isPlayerTurn = false;
+  playerIdx = 0;
+  startBtn.disabled = true;
+  const n = soundSequence.length;
+
+  for (let i = 0; i < n; i++) {
+    const soundIdx = soundSequence[i];
+    const soundEl = soundElArr[soundIdx];
+    setTimeout(playSound, soundDuration * i, soundEl);
+  }
+  setTimeout(() => (isPlayerTurn = true), soundDuration * n);
+}
+
+function incrementLevel() {
+  level++;
+  score += soundSequence.length;
+  soundSequence.push(getRandomSoundIdx());
+
+  levelEl.innerText = level;
+  scoreEl.innerText = score;
+  startBtn.disabled = false;
+}
+
 function startGame() {
-  console.log("started");
+  playLevel();
 }
 
 function resetGame() {
-  console.log("reset");
+  isActive = false;
+  isPlayerTurn = false;
   score = 0;
-  level = 1;
-  scoreEl.innerText = score;
-  levelEl.innerText = level;
+  level = 0;
+  playerIdx = 0;
+  soundSequence = [];
+
+  incrementLevel();
 }
 
 function initializeGame() {
   for (let i = 0; i < soundCount; i++) {
     const soundEl = createSound(i);
+    soundElArr.push(soundEl);
     gameAreaEl.appendChild(soundEl);
 
     const sound = new Audio(`./sounds/${i * 2 + 1}.m4a`);
@@ -75,11 +107,26 @@ function initializeGame() {
   resetGame();
 }
 
-function createSound(colorIdx) {
+function loseGame() {}
+
+function playSound(soundEl) {
+  const soundIdx = soundEl.getAttribute(SOUND_IDX);
+
+  soundEl.style.backgroundColor = brightSoundColors[soundIdx];
+  sounds[soundIdx].play();
+  isActive = false;
+
+  setTimeout(() => {
+    soundEl.style.backgroundColor = soundColors[soundIdx];
+    isActive = true;
+  }, soundDuration);
+}
+
+function createSound(soundIdx) {
   const soundEl = document.createElement("div");
   soundEl.className = "circle";
-  soundEl.style.backgroundColor = soundColors[colorIdx];
-  soundEl.setAttribute(COLOR_IDX, colorIdx);
+  soundEl.style.backgroundColor = soundColors[soundIdx];
+  soundEl.setAttribute(SOUND_IDX, soundIdx);
   soundEl.addEventListener(CLICK, soundClick);
 
   return soundEl;
@@ -90,15 +137,19 @@ function createSound(colorIdx) {
 //////////////////
 
 function soundClick(e) {
+  if (!isPlayerTurn || !isActive) return;
   const soundEl = e.currentTarget;
-  const colorIdx = soundEl.getAttribute(COLOR_IDX);
+  playSound(soundEl);
 
-  soundEl.style.backgroundColor = brightSoundColors[colorIdx];
-  sounds[colorIdx].play();
-  setTimeout(
-    () => (soundEl.style.backgroundColor = soundColors[colorIdx]),
-    brightenDuration
-  );
+  const actualSoundIdx = soundSequence[playerIdx];
+  const playerSoundIdx = parseInt(soundEl.getAttribute(SOUND_IDX));
+  if (actualSoundIdx !== playerSoundIdx) {
+    loseGame();
+    return;
+  }
+
+  playerIdx++;
+  if (playerIdx === soundSequence.length) incrementLevel();
 }
 
 function getRgbString(rgbValues) {
@@ -113,4 +164,12 @@ function getBrightRgbString(rgbValues) {
 
 function brighten(colorValue) {
   return Math.min(255, colorValue / brightenRatio);
+}
+
+function getRandomSoundIdx() {
+  return getRandomNumber(0, soundCount - 1);
+}
+
+function getRandomNumber(min, max) {
+  return parseInt(Math.random() * (max - min + 1) + min);
 }
