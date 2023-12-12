@@ -4,8 +4,14 @@ const levelEl = document.getElementById("level");
 const startBtn = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 
+const popupEl = document.getElementById("popup");
+const closeBtn = document.getElementById("closeBtn");
+const popLevelEl = document.getElementById("popLevel");
+const popResetBtn = document.getElementById("popResetBtn");
+
 const CLICK = "click",
-  SOUND_IDX = "sound-idx";
+  SOUND_IDX = "sound-idx",
+  HIDE = "hide";
 
 // RGB Values
 const PINK = [228, 101, 122],
@@ -41,6 +47,7 @@ const soundElArr = [];
 const sounds = [];
 
 const soundDuration = 500; // ms
+const offset = 100; // ms
 const soundCount = 4;
 
 let isActive;
@@ -61,7 +68,7 @@ function playLevel() {
   for (let i = 0; i < n; i++) {
     const soundIdx = soundSequence[i];
     const soundEl = soundElArr[soundIdx];
-    setTimeout(playSound, soundDuration * i, soundEl);
+    setTimeout(playSound, (soundDuration + offset) * i, soundEl);
   }
   setTimeout(() => (isPlayerTurn = true), soundDuration * n);
 }
@@ -70,10 +77,13 @@ function incrementLevel() {
   level++;
   score += soundSequence.length;
   soundSequence.push(getRandomSoundIdx());
+  isPlayerTurn = false;
 
   levelEl.innerText = level;
   scoreEl.innerText = score;
   startBtn.disabled = false;
+
+  console.log(soundSequence);
 }
 
 function startGame() {
@@ -87,6 +97,7 @@ function resetGame() {
   level = 0;
   playerIdx = 0;
   soundSequence = [];
+  popupEl.classList.add(HIDE);
 
   incrementLevel();
 }
@@ -103,11 +114,17 @@ function initializeGame() {
 
   startBtn.addEventListener(CLICK, startGame);
   resetBtn.addEventListener(CLICK, resetGame);
+  popResetBtn.addEventListener(CLICK, resetGame);
+  closeBtn.addEventListener(CLICK, closePopup);
 
   resetGame();
 }
 
-function loseGame() {}
+function loseGame() {
+  isPlayerTurn = false;
+  popLevelEl.innerText = level;
+  popupEl.classList.remove(HIDE);
+}
 
 function playSound(soundEl) {
   const soundIdx = soundEl.getAttribute(SOUND_IDX);
@@ -150,6 +167,10 @@ function soundClick(e) {
 
   playerIdx++;
   if (playerIdx === soundSequence.length) incrementLevel();
+}
+
+function closePopup() {
+  popupEl.classList.add(HIDE);
 }
 
 function getRgbString(rgbValues) {

@@ -87,3 +87,37 @@ body {
     filter: brightness($brightenPercentage);
   }
 }
+
+.popup {
+  @extend .absolute-center;
+  @include set-background(coral);
+  @extend .flex-center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 35px;
+  border-radius: 10px;
+  border: $border;
+
+  .reset-btn {
+    @extend %btn;
+    border: $border;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    color: rgb(255, 41, 41);
+    cursor: pointer;
+
+    &:active {
+      transform: scale(95%);
+    }
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+  }
+}

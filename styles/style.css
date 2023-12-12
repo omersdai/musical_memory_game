@@ -13,32 +13,32 @@
   flex-direction: row;
 }
 
-.game-info .bottom .btn {
+.popup .reset-btn, .game-info .bottom .btn {
   font-size: 15px;
   padding: 15px 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-.game-info .bottom .btn:active {
+.popup .reset-btn:active, .game-info .bottom .btn:active {
   transform: scale(95%);
 }
-.game-info .bottom .btn:hover {
+.popup .reset-btn:hover, .game-info .bottom .btn:hover {
   filter: brightness(0.95);
 }
-.game-info .bottom .btn:disabled {
+.popup .reset-btn:disabled, .game-info .bottom .btn:disabled {
   cursor: default;
   transform: none;
   filter: brightness(0.5);
 }
 
-.flex-center {
+.flex-center, .popup {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.absolute-center {
+.absolute-center, .popup {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -204,4 +204,32 @@ body {
 }
 .game-area .brighten {
   filter: brightness(0.4);
+}
+
+.popup {
+  background-color: coral;
+  color: #000;
+  flex-direction: column;
+  gap: 10px;
+  padding: 35px;
+  border-radius: 10px;
+  border: 3px solid black;
+}
+.popup .reset-btn {
+  border: 3px solid black;
+}
+.popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: rgb(255, 41, 41);
+  cursor: pointer;
+}
+.popup .close-btn:active {
+  transform: scale(95%);
+}
+.popup .close-btn:hover {
+  filter: brightness(0.95);
 }/*# sourceMappingURL=style.css.map */
