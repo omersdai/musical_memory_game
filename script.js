@@ -107,7 +107,6 @@ function initializeGame() {
     gameAreaEl.appendChild(soundEl);
 
     const sound = new Audio(`./sounds/${i * 2 + 1}.m4a`);
-    console.log(sound);
     sounds.push(sound);
   }
 
