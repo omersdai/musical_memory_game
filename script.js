@@ -46,7 +46,7 @@ const brightSoundColors = [
 const soundElArr = [];
 const sounds = [];
 
-const soundDuration = 500; // ms
+const soundDuration = 800; // ms
 const offset = 100; // ms
 const soundCount = 4;
 
@@ -82,8 +82,6 @@ function incrementLevel() {
   levelEl.innerText = level;
   scoreEl.innerText = score;
   startBtn.disabled = false;
-
-  console.log(soundSequence);
 }
 
 function startGame() {
@@ -109,6 +107,7 @@ function initializeGame() {
     gameAreaEl.appendChild(soundEl);
 
     const sound = new Audio(`./sounds/${i * 2 + 1}.m4a`);
+    console.log(sound);
     sounds.push(sound);
   }
 
@@ -135,6 +134,8 @@ function playSound(soundEl) {
 
   setTimeout(() => {
     soundEl.style.backgroundColor = soundColors[soundIdx];
+    sounds[soundIdx].pause();
+    sounds[soundIdx].load();
     isActive = true;
   }, soundDuration);
 }
