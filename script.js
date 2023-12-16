@@ -12,6 +12,7 @@ const popResetBtn = document.getElementById("popResetBtn");
 const CLICK = "click",
   SOUND_IDX = "sound-idx",
   HIDE = "hide";
+START = "Start";
 
 // RGB Values
 const PINK = [228, 101, 122],
@@ -63,6 +64,8 @@ function playLevel() {
   isPlayerTurn = false;
   playerIdx = 0;
   startBtn.disabled = true;
+  startBtn.innerText = "Listen";
+
   const n = soundSequence.length;
 
   for (let i = 0; i < n; i++) {
@@ -70,7 +73,10 @@ function playLevel() {
     const soundEl = soundElArr[soundIdx];
     setTimeout(playSound, (soundDuration + offset) * i, soundEl);
   }
-  setTimeout(() => (isPlayerTurn = true), soundDuration * n);
+  setTimeout(() => {
+    isPlayerTurn = true;
+    startBtn.innerText = "Play";
+  }, soundDuration * n);
 }
 
 function incrementLevel() {
@@ -82,6 +88,7 @@ function incrementLevel() {
   levelEl.innerText = level;
   scoreEl.innerText = score;
   startBtn.disabled = false;
+  startBtn.innerText = "Start";
 }
 
 function startGame() {
@@ -96,6 +103,7 @@ function resetGame() {
   playerIdx = 0;
   soundSequence = [];
   popupEl.classList.add(HIDE);
+  startBtn.innerText = START;
 
   incrementLevel();
 }
